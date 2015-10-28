@@ -3,6 +3,9 @@ from ap_ssh import *
 import time
 
 
+tags_fw = "ftp://10.1.1.47/uap/tags/3.4.8/uap_qca956x/bin/latest_firmware-bootrom.bin"
+
+
 class AccessPoint:
 
     #Basic Action#
@@ -39,8 +42,47 @@ class AccessPoint:
         driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/ul/li[4]/a").click()
 
     def radio_tab(self):
-        driver = self. driver
+        driver = self.driver
         driver.find_element_by_xpath(".//*[@id='ui-accordion-3-header-1']/div").click()
+
+    def custom_upgrade_tab(self, link):
+        driver = self.driver
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[13]/div").click()
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[14]/button").click()
+        textfield = driver.find_element_by_name("upgrade-url")
+        textfield.send_keys(link)
+        driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
+        driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
+
+    def custom_upgrade_tab_stress(self, link):
+        driver = self.driver
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[13]/div").click()
+
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[14]/button").click()
+        textfield = driver.find_element_by_name("upgrade-url")
+        textfield.send_keys(link)
+        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+
+
+     ##   driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
+     ##   driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
+        print "sleep begin"
+        time.sleep(90)
+        print "sleep done"
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[13]/div").click()
+        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[14]/button").click()
+        textfield = driver.find_element_by_name("upgrade-url")
+        textfield.send_keys(link)
+        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+
+
+
+
+
+
+
 
     def two_g(self, ht):
         driver = self.driver
@@ -90,7 +132,30 @@ class AccessPoint:
         self.radio_tab()
         self.five_g(ht)
 
+    def upgrade_ap(self, link):
+        self.login()
+        self.device_tab()
+        self.mac_address(self.mac)
+        self.configuration_tab()
+        self.custom_upgrade_tab(link)
+
+    def upgrade_ap_stress(self, link):
+        self.login()
+        self.device_tab()
+        self.mac_address(self.mac)
+        self.configuration_tab()
+        self.custom_upgrade_tab_stress(link)
+
+
+
 
 if __name__ == "__main__":
+
+
     ap = AccessPoint('mac-44d9e702010c')
-    ap.configure_5g_channel_width("80")
+    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/78_2015-10-26_11%3A36%3A36_xi.chen_b930357/uap_qca956x/bin/latest_firmware-bootrom.bin"
+    ap.upgrade_ap_stress(link)
+
+
+
+

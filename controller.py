@@ -1,9 +1,11 @@
 from selenium import webdriver
 from ap_ssh import *
 import time
+from itertools import cycle
 
 
 tags_fw = "ftp://10.1.1.47/uap/tags/3.4.8/uap_qca956x/bin/latest_firmware-bootrom.bin"
+myIterator = cycle(range(2))
 
 
 class AccessPoint:
@@ -56,30 +58,27 @@ class AccessPoint:
 
     def custom_upgrade_tab_stress(self, link):
         driver = self.driver
-        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[13]/div").click()
+        #CUSTOM UPGRADE
 
-        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[14]/button").click()
-        textfield = driver.find_element_by_name("upgrade-url")
-        textfield.send_keys(link)
-        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
-        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+        num = 10
 
+        for x in range(0, num):
+            driver.find_element_by_id("ui-accordion-3-header-6").click()
 
-     ##   driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
-     ##   driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
-        print "sleep begin"
-        time.sleep(90)
-        print "sleep done"
-        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[13]/div").click()
-        driver.find_element_by_xpath("html/body/div[2]/div/div[3]/div[2]/div/div/div[2]/div[4]/div[1]/div[4]/div/div[14]/button").click()
-        textfield = driver.find_element_by_name("upgrade-url")
-        textfield.send_keys(link)
-        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
-        driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+            driver.find_element_by_xpath("//button[span='Custom Upgrade']").click()
+            textfield = driver.find_element_by_name("upgrade-url")
+            textfield.send_keys(link)
+            driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+            driver.find_element_by_xpath("//div[3]/div/button[1]").click()
+    
 
+            driver.find_element_by_xpath("//button[span='Custom Upgrade']").click()
+            textfield = driver.find_element_by_name("upgrade-url")
+            textfield.send_keys(link)
+            driver.find_element_by_xpath("//button[contains(@class, 'red')]").click()
+            driver.find_element_by_xpath("html/body/div[last()]/div[3]/div/button[1]").click()
 
-
-
+            print "second install done"
 
 
 

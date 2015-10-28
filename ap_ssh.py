@@ -1,5 +1,6 @@
 import paramiko
 import time
+import re
 
 
 class MyAP:
@@ -29,6 +30,11 @@ class MyAP:
         stdin, stdout, stderr = self.ssh.exec_command(command)
         for line in stdout.read().splitlines():
             print line
+
+    def get_ver(self):
+        stdin, stdout, stderr = self.ssh.exec_command('mca-cli-op info')
+        infostr = stdout.read()
+        return re.search('Version:\s*(.+)\s*', infostr).group(1)
 
 
 if __name__ == "__main__":

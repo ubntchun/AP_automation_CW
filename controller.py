@@ -5,7 +5,6 @@ from itertools import cycle
 
 
 tags_fw = "ftp://10.1.1.47/uap/tags/3.4.8/uap_qca956x/bin/latest_firmware-bootrom.bin"
-myIterator = cycle(range(2))
 
 
 class AccessPoint:
@@ -56,29 +55,31 @@ class AccessPoint:
         driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
         driver.find_element_by_xpath("html/body/div[8]/div[3]/div/button[1]").click()
 
-    def custom_upgrade_tab_stress(self, link):
+    def custom_upgrade_tab_stress(self, link, num):
         driver = self.driver
         #CUSTOM UPGRADE
+        driver.find_element_by_id("ui-accordion-3-header-6").click()
 
-        num = 10
+        myIterator = cycle(range(2))
 
         for x in range(0, num):
-            driver.find_element_by_id("ui-accordion-3-header-6").click()
 
+            if myIterator.next() == 0:
+                uglink = tags_fw
+                print "Install tag firmware: " + str(x)
+            else:
+                uglink = link
+                print "Upgrading firmware: " + str(x)
+
+            print uglink
             driver.find_element_by_xpath("//button[span='Custom Upgrade']").click()
             textfield = driver.find_element_by_name("upgrade-url")
-            textfield.send_keys(link)
-            driver.find_element_by_xpath("//div[3]/div/button[1]").click()
-            driver.find_element_by_xpath("//div[3]/div/button[1]").click()
-    
-
-            driver.find_element_by_xpath("//button[span='Custom Upgrade']").click()
-            textfield = driver.find_element_by_name("upgrade-url")
-            textfield.send_keys(link)
+            textfield.send_keys(uglink)
             driver.find_element_by_xpath("//button[contains(@class, 'red')]").click()
             driver.find_element_by_xpath("html/body/div[last()]/div[3]/div/button[1]").click()
+            x+=1
+            time.sleep(300)
 
-            print "second install done"
 
 
 
@@ -138,12 +139,12 @@ class AccessPoint:
         self.configuration_tab()
         self.custom_upgrade_tab(link)
 
-    def upgrade_ap_stress(self, link):
+    def upgrade_ap_stress(self, link, num):
         self.login()
         self.device_tab()
         self.mac_address(self.mac)
         self.configuration_tab()
-        self.custom_upgrade_tab_stress(link)
+        self.custom_upgrade_tab_stress(link, num)
 
 
 
@@ -153,7 +154,7 @@ if __name__ == "__main__":
 
     ap = AccessPoint('mac-44d9e702010c')
     link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/78_2015-10-26_11%3A36%3A36_xi.chen_b930357/uap_qca956x/bin/latest_firmware-bootrom.bin"
-    ap.upgrade_ap_stress(link)
+    ap.upgrade_ap_stress(link, 10)
 
 
 

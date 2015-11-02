@@ -1,5 +1,4 @@
 from selenium import webdriver
-from ap_ssh import *
 import time
 from itertools import cycle
 
@@ -152,9 +151,9 @@ class AccessPoint:
 if __name__ == "__main__":
 
 
-    ap = AccessPoint('mac-44d9e702010c')
-    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/78_2015-10-26_11%3A36%3A36_xi.chen_b930357/uap_qca956x/bin/latest_firmware-bootrom.bin"
-    ap.upgrade_ap_stress(link, 10)
+    ap = AccessPoint("mac-0418d6c07d33")
+    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/79_2015-10-28_15%3A48%3A40_xi.chen_6d3ba34/uap_qca956x/bin/latest_firmware-bootrom.bin"
+    ap.upgrade_ap_stress(link, 500)
 
 
 

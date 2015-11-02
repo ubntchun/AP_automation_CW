@@ -1,6 +1,7 @@
 from selenium import webdriver
 import time
 from itertools import cycle
+from wifi import *
 
 
 tags_fw = "ftp://10.1.1.47/uap/tags/3.4.8/uap_qca956x/bin/latest_firmware-bootrom.bin"
@@ -16,6 +17,7 @@ class AccessPoint:
         self.user = "admin"
         self.pw = "admin"
         self.driver = webdriver.Firefox()
+        self.driver.implicitly_wait(10)
         self.driver.get(self.ip)
 
     def login(self):
@@ -77,7 +79,8 @@ class AccessPoint:
             driver.find_element_by_xpath("//button[contains(@class, 'red')]").click()
             driver.find_element_by_xpath("html/body/div[last()]/div[3]/div/button[1]").click()
             x+=1
-            time.sleep(300)
+            time.sleep(250)
+            ping_test('192.168.1.238', '10')
 
 
 
@@ -152,7 +155,7 @@ if __name__ == "__main__":
 
 
     ap = AccessPoint("mac-0418d6c07d33")
-    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/79_2015-10-28_15%3A48%3A40_xi.chen_6d3ba34/uap_qca956x/bin/latest_firmware-bootrom.bin"
+    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/80_2015-10-29_13%3A47%3A43_xi.chen_4b9f930/uap_qca956x/bin/latest_firmware-bootrom.bin"
     ap.upgrade_ap_stress(link, 500)
 
 

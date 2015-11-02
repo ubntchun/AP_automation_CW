@@ -36,8 +36,7 @@ class AccessPoint:
 
     def mac_address(self, mac):
         driver = self.driver
-        driver.find_element_by_xpath(".//*[@id='devicesIndex']/div/div[2]/table/tbody/tr[@class ="
-                                     " '" + mac + "']/td[2]").click()
+        driver.find_element_by_xpath("//tbody/tr[@class ="" '" + mac + "']/td[2]").click()
 
     def configuration_tab(self):
         driver = self.driver
@@ -82,8 +81,13 @@ class AccessPoint:
             time.sleep(250)
             ping_test('192.168.1.238', '10')
 
-
-
+    def reboot_ap(self,num):
+        driver = self.driver
+        for x in range(0, num):
+            driver.find_element_by_xpath("//tbody/tr[@class ="" '" + self.mac + "']/td[24]/button[2]").click()
+            x+=1
+            print "Reboot: " + str(x)
+            time.sleep(250)
 
 
     def two_g(self, ht):
@@ -148,15 +152,23 @@ class AccessPoint:
         self.configuration_tab()
         self.custom_upgrade_tab_stress(link, num)
 
+    def reboot_ap_stress(self,num):
+        self.login()
+        self.device_tab()
+        self.reboot_ap(num)
+
+
 
 
 
 if __name__ == "__main__":
 
 
-    ap = AccessPoint("mac-0418d6c07d33")
-    link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/80_2015-10-29_13%3A47%3A43_xi.chen_4b9f930/uap_qca956x/bin/latest_firmware-bootrom.bin"
-    ap.upgrade_ap_stress(link, 500)
+    ap = AccessPoint("mac-44d9e702010c")
+    #link = "ftp://10.1.1.47/uap/heads/feature-uapgen2-stable-bsteering/80_2015-10-29_13%3A47%3A43_xi.chen_4b9f930/uap_qca956x/bin/latest_firmware-bootrom.bin"
+    #ap.upgrade_ap_stress(link, 500)
+
+    ap.reboot_ap_stress(10)
 
 
 

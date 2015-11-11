@@ -8,3 +8,4 @@
   make a socket connection with the android device and send text to trigger video playback on android devices
 -wifi.py
   using subprocess library to excute windows "ping" command via wireless network card to test internet connection
+ 
